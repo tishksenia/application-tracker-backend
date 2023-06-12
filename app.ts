@@ -3,13 +3,12 @@ import { rootRouter } from "./routes";
 import cookieParser from "cookie-parser";
 import path from "path";
 import "dotenv/config";
-// middleware to log HTTP requests and errors
-import logger from "morgan";
 
 const app = express();
 const port = process.env.PORT;
 
-app.use(logger("dev"));
+import "./logging";
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -18,7 +17,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", rootRouter);
 
 const server = app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  console.log(
+    `⚡️[server]: Server is running at http://localhost:${port} in ${app.get(
+      "env"
+    )} mode`
+  );
 });
 
 process.on("SIGTERM", () => {
@@ -28,4 +31,4 @@ process.on("SIGTERM", () => {
   });
 });
 
-module.exports = app;
+export { app };

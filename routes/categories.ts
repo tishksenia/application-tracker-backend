@@ -17,7 +17,6 @@ const mockCategories: Category[] = [
 
 /* GET mock categories. */
 router.get("/", function (req, res, next) {
-  console.log("categories");
   if (req.method === "GET") {
     res.status(200).json(mockCategories);
   } else {
