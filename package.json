@@ -5,6 +5,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "NODE_ENV=production npx pm2 start dist/app.js",
+    "start:cluster": "NODE_ENV=production npx pm2 start dist/app.js -i MAX",
     "stop": "npx pm2 stop app",
     "restart": "npx pm2 restart app",
     "monitor": "npx pm2 monit",
