@@ -4,10 +4,7 @@ import path from 'path';
 import 'dotenv/config';
 
 import { rootRouter } from './routes';
-import { port } from './config';
-import { initialiseSentry, attachErrorHandlers } from './sentry-config';
-import { configureLogging } from './logging';
-import { startServer } from './start-server';
+import { configureLogging, startServer, initialiseSentry, attachErrorHandlers, port } from './app-config';
 
 const app = express();
 

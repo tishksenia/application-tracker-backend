@@ -1,6 +1,6 @@
 import morgan from 'morgan';
 import fs from 'fs';
-import { app } from './app';
+import { app } from '../app';
 
 const configureLogging = () => {
     switch (app.get('env')) {

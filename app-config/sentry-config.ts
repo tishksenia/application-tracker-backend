@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 import * as Sentry from '@sentry/node';
 
-import { app } from './app';
+import { app } from '../app';
 import { dsn } from './config';
 
 const initialiseSentry = () => {
