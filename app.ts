@@ -1,37 +1,28 @@
-import express from "express";
-import { rootRouter } from "./routes";
-import cookieParser from "cookie-parser";
-import path from "path";
-import "dotenv/config";
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import path from 'path';
+import 'dotenv/config';
+
+import { rootRouter } from './routes';
+import { port } from './config';
+import { initialiseSentry, attachErrorHandlers } from './sentry-config';
+import { configureLogging } from './logging';
+import { startServer } from './start-server';
 
 const app = express();
 
-import "./logging";
+configureLogging();
+initialiseSentry();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", rootRouter);
+app.use('/', rootRouter);
 
-const startServer = (port?: string) => {
-  const server = app.listen(port, () => {
-    console.log(
-      `⚡️[server]: Server is running at http://localhost:${port} in ${app.get(
-        "env"
-      )} mode`
-    );
-  });
+attachErrorHandlers();
 
-  process.on("SIGTERM", () => {
-    console.debug("SIGTERM signal received: closing HTTP server");
-    server.close(() => {
-      console.debug("HTTP server closed");
-    });
-  });
-};
-
-startServer(process.env.PORT);
+startServer(port);
 
 export { app };
