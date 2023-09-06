@@ -1,5 +1,12 @@
 import express from 'express';
+import mysql from 'mysql2';
+
+import { databaseUrl } from '../app-config';
+
 var router = express.Router();
+
+const connection = mysql.createConnection(databaseUrl as string);
+connection.connect();
 
 interface Category {
     id: number;
@@ -7,18 +14,15 @@ interface Category {
     applications: number[];
 }
 
-const mockCategories: Category[] = [
-    {
-        id: 0,
-        title: 'Germany',
-        applications: [1, 2, 3],
-    },
-];
-
-/* GET mock categories. */
+/* GET categories. */
 router.get('/', function (req, res, next) {
     if (req.method === 'GET') {
-        res.status(200).json(mockCategories);
+        connection.query('SELECT * FROM categories', (err, rows, fields) => {
+            if (err) {
+                throw err;
+            }
+            res.status(200).json(rows);
+        });
     } else {
         res.status(500).json({ message: 'Wrong HTTP Method, use GET' });
     }
